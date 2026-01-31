@@ -18,16 +18,12 @@ def fetch_hot100(date_str: str, limit: int = 10):
 
     soup = BeautifulSoup(r.text, "html.parser")
 
-    # Billboard muda classes às vezes; este seletor costuma funcionar bem:
-    # títulos geralmente aparecem em h3 com id 'title-of-a-story' dentro das linhas do chart
     rows = soup.select("li.o-chart-results-list__item > h3#title-of-a-story")
     # fallback (mais amplo)
     if not rows:
         rows = soup.select("h3#title-of-a-story")
 
     titles = [x.get_text(strip=True) for x in rows if x.get_text(strip=True)]
-    # artistas geralmente aparecem em span logo abaixo do título, com classes variáveis
-    # vamos pegar blocos de item e extrair título+artista juntos:
     entries = []
     chart_items = soup.select("li.o-chart-results-list__item > h3#title-of-a-story")
     if chart_items:
@@ -55,3 +51,4 @@ def fetch_hot100(date_str: str, limit: int = 10):
         e["rank"] = i
 
     return entries
+
