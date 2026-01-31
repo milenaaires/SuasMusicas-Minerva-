@@ -121,8 +121,6 @@ def cached_billboard(date_str: str, limit: int):
 
 @st.cache_data(ttl=60 * 60 * 24 * 30)  # 30 dias
 def cached_link(title: str, artist: str):
-    # cache “puro” por música; a sessão fica fora do cache
-    # (vamos chamar best_spotify_link dentro de um wrapper)
     return {"title": title, "artist": artist}
 
 def build_weeks(year: int, month: int):
@@ -191,8 +189,7 @@ if go:
     headers = {"User-Agent": "Mozilla/5.0"}
     session.headers.update(headers)
 
-    # modo rápido: se quiser, a gente evita algumas chamadas pesadas:
-    # aqui fazemos normalmente, mas você pode reduzir workers ou quantidade.
+    # modo rápido
     max_workers = 18 if speed_mode else 10
 
     def resolve_one(s):
@@ -265,3 +262,4 @@ if go:
         mime="text/csv",
         use_container_width=True,
     )
+
